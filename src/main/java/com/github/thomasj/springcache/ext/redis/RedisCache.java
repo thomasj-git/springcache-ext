@@ -179,7 +179,7 @@ public class RedisCache extends AbstractValueAdaptingCache {
 			log.debug("添加缓存, 键: {}, 值: {}", key, value);
 		}
 		if (!this.isAllowNullValues() && value == null) {
-			throw new NullPointerException(String.format("Key: [%s], Value is null, isAllowNullValues [no]", key));
+			throw new NullPointerException(String.format("LRUKey: [%s], Value is null, isAllowNullValues [no]", key));
 		}
 		RedisCommands cmd = this.nativeRedis.sync();
 		if (key instanceof ExpiryKey) {
@@ -205,7 +205,7 @@ public class RedisCache extends AbstractValueAdaptingCache {
 			log.debug("添加缓存(不存在添加), 键: {}, 值: {}", key, value);
 		}
 		if (!this.isAllowNullValues() && value == null) {
-			throw new NullPointerException(String.format("Key: [%s], Value is null, isAllowNullValues [no]", key));
+			throw new NullPointerException(String.format("LRUKey: [%s], Value is null, isAllowNullValues [no]", key));
 		}
 		RedisCommands cmd = this.nativeRedis.sync();
 		if (key instanceof ExpiryKey) {

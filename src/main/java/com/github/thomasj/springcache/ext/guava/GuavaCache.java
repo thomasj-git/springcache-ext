@@ -91,7 +91,7 @@ public class GuavaCache extends AbstractValueAdaptingCache {
 		}
 		else {
 			if (!this.isAllowNullValues() && value == null) {
-				throw new NullPointerException(String.format("Key: [%s], Value is null, isAllowNullValues [no]", key));
+				throw new NullPointerException(String.format("LRUKey: [%s], Value is null, isAllowNullValues [no]", key));
 			}
 			this.nativeCache.put(key, value);
 		}
@@ -112,7 +112,7 @@ public class GuavaCache extends AbstractValueAdaptingCache {
 		}
 		if (v == null) {
 			if (!this.isAllowNullValues() && value == null) {
-				throw new NullPointerException(String.format("Key: [%s], Value is null, isAllowNullValues [no]", key));
+				throw new NullPointerException(String.format("LRUKey: [%s], Value is null, isAllowNullValues [no]", key));
 			}
 			this.nativeCache.put(key, value);
 			return null;

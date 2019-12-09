@@ -1,6 +1,6 @@
 # 说明
         扩展spring cache，支持到方法级别的缓存过期,spring只提供缓存方案，过期策略需要自己扩展实现（当然前提也是需要缓存中间件支持过期机制）
-    提供了guava、memached、redis实现方案，其中memcacached和redis方法级别的缓存过期，guava只能支持全局。
+    提供了guava、juc、mmc、redis实现方案，其中juc、mmc、redis方法级别的缓存过期，guava只能支持全局。
 
 # 使用
 ## 获取安装
@@ -37,6 +37,19 @@ mvn deploy:deploy-file \
 ## 使用
 ```Java
 // 以下CacheManager只需申明一种即可
+  
+// 基于LinkedHashMap和DelayQueue实现的缓存，无需依赖缓存中间件(缺点是只能支持进程级别)
+@Bean
+public CacheManager cacheManager ()
+throws Exception {
+    SimpleCacheManager cacheManager = new SimpleCacheManager();
+    LinkedHashMapEx nativeCache = new LinkedHashMapEx();
+    nativeCache.afterPropertiesSet();
+    SimpleLRUCache cache = new SimpleLRUCache(nativeCache);
+    cacheManager.setCaches(ImmutableList.of(cache));
+    return cacheManager;
+}
+   
 // 使用memcached作为缓存
 @Bean
 public CacheManager cacheManager ()
@@ -66,6 +79,7 @@ throws Exception {
     return cacheManager;
 }
   
+// 缓存key的创建策略（方法全限定名+参数）
 @Bean
 public KeyGenerator apiKeyGenerator () {
     return new ParamsKeyGenerator();
