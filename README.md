@@ -42,41 +42,40 @@ mvn deploy:deploy-file \
 @Bean
 public CacheManager cacheManager ()
 throws Exception {
-    SimpleCacheManager cacheManager = new SimpleCacheManager();
-    LinkedHashMapEx nativeCache = new LinkedHashMapEx();
-    nativeCache.afterPropertiesSet();
-    SimpleLRUCache cache = new SimpleLRUCache(nativeCache);
-    cacheManager.setCaches(ImmutableList.of(cache));
-    return cacheManager;
+    return new CacheConfig();
 }
    
 // 使用memcached作为缓存
 @Bean
 public CacheManager cacheManager ()
 throws Exception {
-    SimpleCacheManager cacheManager = new SimpleCacheManager();
-    MemcachedCacheFactoryBean factoryBean = new MemcachedCacheFactoryBean();
-    factoryBean.setPoolConfig(new PoolConfiguration("192.168.56.201:11201"));
-    factoryBean.afterPropertiesSet();
-    MemCachedClient client = factoryBean.getObject();
-    MemcachedCache cache = new MemcachedCache(client);
-    cacheManager.setCaches(ImmutableList.of(cache));
-    return cacheManager;
+   return new CacheConfig(){
+   	    protected Cache buildCache(){
+            MemcachedCacheFactoryBean factoryBean = new MemcachedCacheFactoryBean();
+            factoryBean.setPoolConfig(new PoolConfiguration("192.168.56.201:11201"));
+            factoryBean.afterPropertiesSet();
+            MemCachedClient client = factoryBean.getObject();
+            MemcachedCache cache = new MemcachedCache(client);
+            return cache;
+   	    }
+   };
 }
   
 // 使用redis作为缓存
 @Bean
 public CacheManager cacheManager ()
 throws Exception {
-    SimpleCacheManager cacheManager = new SimpleCacheManager();
-    RedisFactoryBean factoryBean = new RedisFactoryBean();
-    factoryBean.setRedisUri("redis://192.168.56.201:6379/1");
-    factoryBean.setUseBinary(true);
-    factoryBean.afterPropertiesSet();
-    StatefulRedisConnection nativeRedis = factoryBean.getObject();
-    RedisCache cache=new RedisCache(nativeRedis);
-    cacheManager.setCaches(ImmutableList.of(cache));
-    return cacheManager;
+    return new CacheConfig(){
+       	    protected Cache buildCache(){
+                RedisFactoryBean factoryBean = new RedisFactoryBean();
+                factoryBean.setRedisUri("redis://192.168.56.201:6379/1");
+                factoryBean.setUseBinary(true);
+                factoryBean.afterPropertiesSet();
+                StatefulRedisConnection nativeRedis = factoryBean.getObject();
+                RedisCache cache=new RedisCache(nativeRedis);
+                return cache;
+       	    }
+       };
 }
   
 // 缓存key的创建策略（方法全限定名+参数）
