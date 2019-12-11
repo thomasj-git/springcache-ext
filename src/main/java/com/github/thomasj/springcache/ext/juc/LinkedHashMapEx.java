@@ -38,6 +38,7 @@ public class LinkedHashMapEx extends LinkedHashMap<String, Object> implements In
 	@Override
 	protected boolean removeEldestEntry (Map.Entry eldest) {
 		if (super.size() > maxCapacity) {
+			// FIXME 溢出后，延时队列无法清理，必须等待延时达到后启动清理
 			log.warn("缓存溢出，移除掉 KEY: {}, 容量: {}", eldest.getKey(), maxCapacity);
 			return true;
 		}
