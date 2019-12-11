@@ -10,6 +10,20 @@
     <description>This is a springcache ext.</description>
     <packaging>jar</packaging>
 
+    <licenses>
+        <license>
+            <name>The MIT License (MIT)</name>
+            <url>https://github.com/thomasj-git/springcache-ext/blob/master/LICENSE</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>stantnks</name>
+            <email>stantnks@gmail.com</email>
+        </developer>
+    </developers>
+
     <dependencies>
         <dependency>
             <groupId>commons-io</groupId>
