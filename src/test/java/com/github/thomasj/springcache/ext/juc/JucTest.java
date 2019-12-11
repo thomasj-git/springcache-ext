@@ -35,14 +35,21 @@ public class JucTest {
 
 	@Test
 	public void testExpiry () {
-		cache.put("foo1", "bar1", 1, TimeUnit.SECONDS);
+		System.out.println("添加Key: "+System.currentTimeMillis());
+		cache.put("foo1", "bar1", 2, TimeUnit.SECONDS);
+		try {
+			TimeUnit.MILLISECONDS.sleep(500);
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		Assert.assertEquals("bar1", cache.get("foo1"));
 		try {
 			TimeUnit.SECONDS.sleep(2);
 		}
 		catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		System.out.println(cache.get("foo1"));
 		Assert.assertNotEquals("bar1", cache.get("foo1"));
 	}
 }

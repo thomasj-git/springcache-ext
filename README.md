@@ -50,13 +50,13 @@ throws Exception {
 public CacheManager cacheManager ()
 throws Exception {
    return new CacheConfig(){
-   	    protected Cache buildCache(){
+   	    protected Collection<Cache> buildCaches(){
             MemcachedCacheFactoryBean factoryBean = new MemcachedCacheFactoryBean();
             factoryBean.setPoolConfig(new PoolConfiguration("192.168.56.201:11201"));
             factoryBean.afterPropertiesSet();
             MemCachedClient client = factoryBean.getObject();
             MemcachedCache cache = new MemcachedCache(client);
-            return cache;
+            return ImmutableList.of(cache);
    	    }
    };
 }
@@ -66,14 +66,14 @@ throws Exception {
 public CacheManager cacheManager ()
 throws Exception {
     return new CacheConfig(){
-       	    protected Cache buildCache(){
+       	    protected Collection<Cache> buildCaches(){
                 RedisFactoryBean factoryBean = new RedisFactoryBean();
                 factoryBean.setRedisUri("redis://192.168.56.201:6379/1");
                 factoryBean.setUseBinary(true);
                 factoryBean.afterPropertiesSet();
                 StatefulRedisConnection nativeRedis = factoryBean.getObject();
                 RedisCache cache=new RedisCache(nativeRedis);
-                return cache;
+                return ImmutableList.of(cache);
        	    }
        };
 }

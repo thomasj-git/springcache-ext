@@ -21,10 +21,9 @@ public class ExpiryTask extends Thread {
 	public void run () {
 		log.info("延时队列检出任务启动.");
 		LRUKey key;
-		Object value;
 		while (true) {
 			try {
-				key = delayQueue.poll(200, TimeUnit.MILLISECONDS);
+				key = delayQueue.poll(100, TimeUnit.MILLISECONDS);
 			}
 			catch (InterruptedException e) {
 				log.info("延时队列检出任务中断");
@@ -33,10 +32,8 @@ public class ExpiryTask extends Thread {
 			if (key == null) {
 				continue;
 			}
-			value = linkedHashMapEx.remove(key.getKey());
-			if (value != null) {
-				log.info("缓存KEY: {} 已经过期, 设置的过期时间: {} ms, 从缓存中删除。", key.getKey(), key.expiryMills());
-			}
+			log.info("缓存KEY: {} 已经过期, 从延时队列移除.", key.getKey());
+			linkedHashMapEx.remove(key.getKey());
 		}
 	}
 }

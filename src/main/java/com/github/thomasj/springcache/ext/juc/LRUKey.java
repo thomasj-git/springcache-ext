@@ -13,13 +13,15 @@ import java.util.concurrent.TimeUnit;
 @Data
 public class LRUKey implements Delayed {
 
-	private long		initMills;
+	private long				initMills;
 
-	private long		expiry;
+	private volatile long		expiry;
 
-	private TimeUnit	eUnit;
+	private TimeUnit			eUnit;
 
-	private String		key;
+	private String				key;
+
+	private volatile boolean	isTake	= false;
 
 	public LRUKey(String key, long expiry, TimeUnit eUnit){
 		this.initMills = System.currentTimeMillis();
@@ -30,7 +32,11 @@ public class LRUKey implements Delayed {
 
 	@Override
 	public long getDelay (TimeUnit unit) {
-		return unit.convert(TimeUnit.MILLISECONDS.convert(expiry, eUnit) - now(), TimeUnit.MILLISECONDS);
+		long delay = unit.convert(TimeUnit.MILLISECONDS.convert(expiry, eUnit) - now(), TimeUnit.MILLISECONDS);
+		if (delay <= 0) {
+			isTake = true;
+		}
+		return delay;
 	}
 
 	@Override
@@ -49,5 +55,12 @@ public class LRUKey implements Delayed {
 
 	public long expiryMills () {
 		return TimeUnit.MILLISECONDS.convert(expiry, eUnit);
+	}
+
+	public void expiry () {
+		if (!isTake) {
+			log.info("把KEY: {} 设置为立即过期, 原始过期时间: {}.", key, expiryMills());
+			this.expiry = 0L;
+		}
 	}
 }

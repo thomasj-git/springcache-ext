@@ -11,6 +11,8 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.lang.Nullable;
 
+import java.util.Collection;
+
 /**
  * @author stantnks@gmail.com
  */
@@ -20,13 +22,12 @@ public class CacheConfig implements FactoryBean<CacheManager> {
 	@Value ("${spring.cache.spi.juc.maxCapacity:10000}")
 	private Integer linkedHashMapExMaxCapacity;
 
-	protected Cache buildCache ()
+	protected Collection<Cache> buildCaches ()
 	throws Exception {
 		LinkedHashMapEx nativeCache = new LinkedHashMapEx();
 		nativeCache.setMaxCapacity(linkedHashMapExMaxCapacity);
 		nativeCache.afterPropertiesSet();
-		SimpleLRUCache cache = new SimpleLRUCache(nativeCache);
-		return cache;
+		return ImmutableList.of(new SimpleLRUCache(nativeCache));
 	}
 
 	@Nullable
@@ -34,7 +35,7 @@ public class CacheConfig implements FactoryBean<CacheManager> {
 	public CacheManager getObject ()
 	throws Exception {
 		SimpleCacheManager cacheManager = new SimpleCacheManager();
-		cacheManager.setCaches(ImmutableList.of(buildCache()));
+		cacheManager.setCaches(buildCaches());
 		cacheManager.afterPropertiesSet();
 		return cacheManager;
 	}

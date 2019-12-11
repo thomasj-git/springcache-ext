@@ -188,11 +188,15 @@ public class SimpleLRUCache extends AbstractValueAdaptingCache {
 
 	@Override
 	public void evict (Object key) {
+		if (log.isDebugEnabled()) {
+			log.debug("删除, 键: {}", key);
+		}
 		this.nativeCache.remove(key);
 	}
 
 	@Override
 	public void clear () {
+		log.warn("清空缓存");
 		this.nativeCache.clear();
 	}
 }
