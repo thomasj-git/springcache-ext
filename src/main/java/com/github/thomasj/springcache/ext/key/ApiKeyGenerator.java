@@ -3,10 +3,11 @@ package com.github.thomasj.springcache.ext.key;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 
-import com.github.thomasj.springcache.ext.annotation.Expiry;
 import org.springframework.cache.interceptor.SimpleKeyGenerator;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.ClassUtils;
+
+import com.github.thomasj.springcache.ext.annotation.Expiry;
 
 /**
  * @author stantnks@gmail.com
@@ -19,10 +20,14 @@ public class ApiKeyGenerator extends SimpleKeyGenerator {
 	}
 
 	public static Object createKey (boolean hasMethod, Object target, Method method, Object[] params) {
+		Expiry expiry = AnnotationUtils.findAnnotation(method, Expiry.class);
 		StringBuilder sb = new StringBuilder(200);
 		sb.append(target.getClass().getName());
 		if (hasMethod) {
 			sb.append(method.getName());
+		}
+		else if (expiry != null && expiry.methodKey() != null) {
+			sb.append(expiry.methodKey());
 		}
 		sb.append("<");
 		Object param;
@@ -60,7 +65,6 @@ public class ApiKeyGenerator extends SimpleKeyGenerator {
 		}
 		sb.append(">");
 		String key = sb.toString();
-		Expiry expiry = AnnotationUtils.findAnnotation(method, Expiry.class);
 		if (expiry != null) {
 			ExpiryKey expiryKey = new ExpiryKey(key, expiry.unit(), expiry.time());
 			return expiryKey;
