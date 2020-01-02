@@ -16,5 +16,5 @@ public @interface Expiry {
 
 	long time() default 300000L;
 
-	String methodKey();
+	String methodKey() default "";
 }

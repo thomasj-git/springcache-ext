@@ -26,7 +26,7 @@ public class ApiKeyGenerator extends SimpleKeyGenerator {
 		if (hasMethod) {
 			sb.append(method.getName());
 		}
-		else if (expiry != null && expiry.methodKey() != null) {
+		else if (expiry != null) {
 			sb.append(expiry.methodKey());
 		}
 		sb.append("<");
