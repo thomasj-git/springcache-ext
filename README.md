@@ -78,18 +78,33 @@ throws Exception {
        };
 }
   
-// 缓存key的创建策略（方法全限定名+参数）
+// 缓存key的创建策略（类全限定名+@Expiry.methodKey）
 @Bean
 public KeyGenerator apiKeyGenerator () {
     return new ParamsKeyGenerator();
 }
   
-// 方法上申明缓存策略（使用@Cacheable配合@Expiry）
-@RequestMapping (path = "/hello", method = RequestMethod.GET)
-@Cacheable (value = "default", keyGenerator = "apiKeyGenerator", unless = "#result==null")
-@Expiry (unit = TimeUnit.SECONDS, time = 5L)
-public String hello (@RequestParam (name = "name", defaultValue = "World") String name) {
-    return "Hello " + name;
+// 接口返回会被缓存30秒
+@Version
+@RequestMapping (path = "/hello/{v}", method = RequestMethod.GET)
+@ResponseBody
+@Cacheable (value = "default", keyGenerator = "apiKeyGenerator")
+@Expiry (time=30, unit=TimeUnit.SECONDS, methodKey = "hello")
+public String hello (@ApiParam (required = true, defaultValue = "v0.1.0") @PathVariable String v) {
+    String uuid = UUID.randomUUID().toString();
+    log.info("创建随机串: {}", uuid);
+    return uuid;
+}
+  
+// 手工立即清除上面接口的缓存
+@Version
+@RequestMapping (path = "/hello/{v}", method = RequestMethod.DELETE)
+@ResponseBody
+@CacheEvict (value = "default", keyGenerator = "apiKeyGenerator")
+@Expiry (methodKey = "hello")
+public String evictHello (@ApiParam (required = true, defaultValue = "v0.1.0") @PathVariable String v) {
+    log.info("调用缓存清除");
+    return "删除缓存成功";
 }
   
 //开启springcache功能

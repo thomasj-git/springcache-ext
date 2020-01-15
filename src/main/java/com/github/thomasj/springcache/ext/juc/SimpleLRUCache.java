@@ -2,6 +2,7 @@ package com.github.thomasj.springcache.ext.juc;
 
 import java.util.concurrent.*;
 
+import com.github.thomasj.springcache.ext.util.NoSqlUtil;
 import org.springframework.cache.support.AbstractValueAdaptingCache;
 import org.springframework.cache.support.SimpleValueWrapper;
 import org.springframework.lang.Nullable;
@@ -191,7 +192,13 @@ public class SimpleLRUCache extends AbstractValueAdaptingCache {
 		if (log.isDebugEnabled()) {
 			log.debug("删除, 键: {}", key);
 		}
-		this.nativeCache.remove(key);
+		if (key instanceof ExpiryKey) {
+			ExpiryKey eKey = (ExpiryKey) key;
+			this.nativeCache.remove(eKey.getKey());
+		}
+		else {
+			this.nativeCache.remove(key);
+		}
 	}
 
 	@Override

@@ -27,9 +27,11 @@ public class ApiKeyGenerator extends SimpleKeyGenerator {
 			sb.append(method.getName());
 		}
 		else if (expiry != null) {
-			sb.append(expiry.methodKey());
+			if (!"".equals(expiry.methodKey())) {
+				sb.append('.').append(expiry.methodKey());
+			}
 		}
-		sb.append("<");
+		sb.append("[");
 		Object param;
 		for (int i = 0; i < params.length; i++) {
 			if (i > 0) {
@@ -63,7 +65,7 @@ public class ApiKeyGenerator extends SimpleKeyGenerator {
 				sb.append(param);
 			}
 		}
-		sb.append(">");
+		sb.append("]");
 		String key = sb.toString();
 		if (expiry != null) {
 			ExpiryKey expiryKey = new ExpiryKey(key, expiry.unit(), expiry.time());

@@ -20,6 +20,6 @@ public class ExpiryKey {
 
 	@Override
 	public String toString () {
-		return "<key:" + key + ", unit:" + unit + ", expiry: " + expiry + ">";
+		return "{\"key\": " + key + ", \"unit\": " + unit + ", \"expiry\": " + expiry + "}";
 	}
 }
