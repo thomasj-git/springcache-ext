@@ -99,7 +99,7 @@ public class GuavaCache extends AbstractValueAdaptingCache {
 
 	@Nullable
 	@Override
-	public ValueWrapper putIfAbsent (Object key, @Nullable Object value) {
+	public synchronized ValueWrapper putIfAbsent (Object key, @Nullable Object value) {
 		if (log.isDebugEnabled()) {
 			log.debug("添加缓存(不存在添加), 键: {}, 值: {}", key, value);
 		}

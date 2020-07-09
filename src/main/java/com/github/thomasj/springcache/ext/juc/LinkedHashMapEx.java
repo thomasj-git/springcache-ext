@@ -54,6 +54,11 @@ public class LinkedHashMapEx extends LinkedHashMap<String, Object> implements In
 	}
 
 	@Override
+	public synchronized Object putIfAbsent (String key, Object value) {
+		return super.putIfAbsent(key, value);
+	}
+
+	@Override
 	public synchronized Object remove (Object key) {
 		if (log.isDebugEnabled()) {
 			log.debug("删除缓存, 键: {}", key);
