@@ -19,7 +19,7 @@
 
     <developers>
         <developer>
-            <name>stantnks</name>
+            <name>thomasj-git</name>
             <email>stantnks@gmail.com</email>
         </developer>
     </developers>
@@ -64,17 +64,12 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>20.0</version>
+            <version>[30.0-jre,)</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.6.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.6.4</version>
+            <version>1.7.29</version>
         </dependency>
         <dependency>
             <groupId>com.danga</groupId>
@@ -89,7 +84,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>4.13.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
