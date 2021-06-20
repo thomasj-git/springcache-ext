@@ -36,7 +36,7 @@ public class DemoCtrl {
 
 
 
-![image-20210620120041132](README/res/README/image-20210620120041132.png)
+![image-20210620120041132](README/image-20210620120041132.png)
 
 
 
