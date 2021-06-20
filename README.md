@@ -146,3 +146,9 @@ public CacheManager cacheManager () throws Exception {
 其中memcached相关依赖从下面获取
 
 [github](https://github.com/downloads/gwhalin/Memcached-Java-Client/java_memcached-release_2.6.1.zip) 、[百度网盘 ](https://pan.baidu.com/s/1VgYl3_SpCpIf-HJ7-mMhaQ)提取码:2upn
+
+
+
+# FAQ
+
+stantnks@gmail.com
